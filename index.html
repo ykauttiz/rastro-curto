@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Rastro Curto · Boletim de rede</title><meta name="description" content="Compare duas capturas HAR e leve para o suporte apenas as contagens de duração e de status HTTP.">
+<link rel="stylesheet" href="style.css"><script defer src="core.js"></script><script defer src="app.js"></script></head><body>
+<a class="skip" href="#mesa">Ir para a análise</a>
+<header><strong><span aria-hidden="true">▥</span> Rastro Curto</strong><label>Tema <select id="theme"><option value="system">Sistema</option><option value="light">Claro</option><option value="dark">Escuro</option></select></label></header>
+<main><section class="hero"><div><p class="kicker">Ferramenta de suporte web</p><h1>Onde ficou<br>a <em>espera?</em></h1><p>Compare duas gravações da aba Rede. Leve para o chamado um boletim com tempos agrupados e falhas HTTP. Os endereços ficam de fora.</p><button id="demo">Experimentar com um caso fictício ↗</button></div><div class="score" aria-hidden="true"><b>HAR / Δ</b><i></i><i></i><i></i><i></i><i></i><i></i><small>ANTES &nbsp; / &nbsp; DEPOIS</small></div></section>
+<section id="mesa" tabindex="-1"><h2>Capturas</h2><p>Exporte um HAR na aba Rede do navegador. Comece com A e acrescente B para comparar. Até 12 MiB por arquivo.</p><div class="inputs"><label>A · Referência<input type="file" id="a" accept=".har,.json,application/json"></label><label>B · Comparação<input type="file" id="b" accept=".har,.json,application/json"></label></div>
+<p id="message" role="status">Aguardando uma captura ou o exemplo.</p></section>
+<section id="report" hidden><div class="heading"><h2>Boletim de rede</h2><button id="download">Baixar boletim .txt</button></div><p id="summary"></p><div class="panels" id="tables"></div><details><summary>O que o boletim revela?</summary><p>Somente quantidades por faixa de duração e família HTTP. Os números ainda podem indicar volume de atividade. Confira o texto antes de enviar. Uma diferença entre capturas não identifica a causa da lentidão.</p></details></section>
+<button id="clear" hidden>Limpar a sessão</button></main><footer>Rastro Curto · Kauê <a href="https://github.com/ykauttiz/rastro-curto">Código e guia ↗</a></footer></body></html>
