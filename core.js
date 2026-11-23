@@ -21,4 +21,13 @@ function summarize(har) {
   }
   return { requests: entries.length, status, latency };
 }
-if (typeof module !== "undefined") module.exports = { summarize };
+// Ratios use the total requests as denominator (including entries without a time).
+// A missing denominator is unavailable, never an invented zero-percent success.
+function quality(summary) {
+  const count = summary.requests;
+  const failed = summary.status["4xx"] + summary.status["5xx"];
+  const slow = summary.latency[3];
+  const measure = value => ({count:value,total:count,percent:count>0?value/count*100:null});
+  return {failed:measure(failed),slow:measure(slow)};
+}
+if (typeof module !== "undefined") module.exports = {summarize,quality};

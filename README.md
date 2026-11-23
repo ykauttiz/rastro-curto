@@ -6,7 +6,7 @@
 
 ## Experimente em um minuto
 
-Clique em **Experimentar com um caso fictício**. Cada captura tem seis requisições. Na linha **2.000 ms ou mais**, a contagem passa de duas para zero. Em **5xx**, passa de uma para zero. Clique em **Baixar boletim .txt** e confira o resultado antes de compartilhar.
+Clique em **Experimentar com um caso fictício**. Cada captura tem seis requisições. Na linha **2.000 ms ou mais**, a contagem passa de duas para zero. Em **5xx**, passa de uma para zero. Os novos cartões mostram também que as requisições com duração de pelo menos 2 segundos passam de **33,3% para 0,0%** do total. Clique em **Baixar boletim .txt** e confira o resultado antes de compartilhar.
 
 ## Use suas capturas
 
@@ -17,7 +17,7 @@ Clique em **Experimentar com um caso fictício**. Cada captura tem seis requisi�
 
 ## Para quem serve
 
-Para suporte e QA que precisam informar quantas requisições demoraram ou falharam. O boletim permite discutir uma mudança sem anexar a captura inteira. Ele perde deliberadamente a identidade de cada requisição. Investigar a causa, identificar uma rota ou depurar um cabeçalho exige outra etapa. As contagens também podem revelar volume de atividade.
+Para suporte e QA que precisam informar quantas requisições demoraram ou falharam. O boletim inclui **taxas de respostas HTTP 4xx/5xx e de requisições com duração de 2 segundos ou mais**, para tornar comparações com volumes de tráfego diferentes mais interpretáveis. O denominador é o total de requisições em cada captura, inclusive quando algumas não têm duração medível. Captura vazia exibe taxa indisponível (—), e variações são expressas em pontos percentuais, sem alegação de causalidade. O boletim permite discutir uma mudança sem anexar a captura inteira. Ele perde deliberadamente a identidade de cada requisição. Investigar a causa, identificar uma rota ou depurar um cabeçalho exige outra etapa. As contagens também podem revelar volume de atividade.
 
 ## Como os dados são tratados
 
