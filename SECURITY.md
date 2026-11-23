@@ -9,4 +9,4 @@ O Rastro Curto é uma ferramenta de análise **local** de capturas HAR. A aplica
 Abra a aba **Security** do repositório e use o mecanismo de relato privado do GitHub se estiver habilitado. Se não estiver disponível, registre uma issue sem detalhes exploráveis ou dados sensíveis, usando somente um exemplo inteiramente fictício. Não publique credenciais, cookies, URLs internas ou capturas reais.
 
 ## Atualizações
-A branch \`main\` é a versão mantida. O projeto não promete prazo fixo de resposta nem certificação independente. O código do navegador aplica uma política de segurança de conteúdo (CSP), mas isso não substitui a proteção dos arquivos originais.
+A branch `main` é a versão mantida. O projeto não promete prazo fixo de resposta nem certificação independente. O código do navegador aplica uma política de segurança de conteúdo (CSP), mas isso não substitui a proteção dos arquivos originais.
