@@ -13,17 +13,64 @@ function cell(row, tag, text, scope) {
   item.textContent = text;
   row.append(item);
 }
+function displayPercent(value) {
+  return value === null ? "—" : new Intl.NumberFormat("pt-BR", {
+    minimumFractionDigits:1, maximumFractionDigits:1
+  }).format(value) + "%";
+}
+function displayDelta(first,second){
+  if(first===null||second===null)return "—";
+  const amount=second-first;
+  return (amount>0?"+":"") + new Intl.NumberFormat("pt-BR",{
+    minimumFractionDigits:1,maximumFractionDigits:1
+  }).format(amount) + " p.p.";
+}
+function renderQuality(a,b,lines){
+  const first=quality(a),second=b?quality(b):null;
+  const title="Taxas de ocorrências sobre o total de requisições";
+  lines.push("",title);
+  for(const [label,key] of [
+    ["Respostas HTTP 4xx e 5xx","failed"],
+    ["Duração de 2.000 ms ou mais","slow"]
+  ]){
+    const card=document.createElement("article");card.className="quality-card";
+    const heading=document.createElement("h3");heading.textContent=label;card.append(heading);
+    const pieces=[];
+    for(const [name,metric] of [["A",first[key]],["B",second?.[key]]]){
+      if(!metric)continue;
+      const row=document.createElement("div");row.className="quality-row";
+      const info=document.createElement("span");
+      info.textContent=name+" · "+displayPercent(metric.percent)+" ("+metric.count+"/"+metric.total+")";
+      row.append(info);
+      const track=document.createElement("div");track.className="quality-track";
+      track.setAttribute("aria-hidden","true");
+      const fill=document.createElement("i");
+      fill.style.width=(metric.percent===null?0:metric.percent)+"%";
+      track.append(fill);row.append(track);card.append(row);
+      pieces.push(info.textContent);
+    }
+    if(second){
+      const delta=document.createElement("small");delta.className="quality-delta";
+      delta.textContent="Variação B−A: "+displayDelta(first[key].percent,second[key].percent);
+      card.append(delta);pieces.push(delta.textContent);
+    }
+    lines.push([label,...pieces].join(" | "));
+    el("quality").append(card);
+  }
+}
 function render() {
   const [a, b] = captures;
   el("report").hidden = !a;
   el("clear").hidden = !a && !b;
   el("tables").replaceChildren();
+  el("quality").replaceChildren();
   bulletin = "";
   if (!a) return;
   const count = n => n + (n === 1 ? " requisição" : " requisições");
   const summary = "A · " + count(a.requests) + (b ? "   /   B · " + count(b.requests) : "");
   el("summary").textContent = summary;
   const lines = ["Rastro Curto", summary];
+  renderQuality(a,b,lines);
   for (const [title, labels, values] of groups) {
     const first = values(a), second = b && values(b);
     const table = document.createElement("table");

@@ -1,5 +1,13 @@
 # Histórico
 
+## 23 de novembro de 2026 · Indicadores proporcionais e interface
+
+- Painel com percentuais acessíveis de respostas HTTP 4xx/5xx e requisições de duração igual ou superior a 2 segundos.
+- Delta B−A em pontos percentuais, preservando a comparação de contagens existente e a privacidade do boletim.
+- Capturas vazias exibem percentuais indisponíveis, sem criar uma falsa taxa de sucesso.
+- Visual responsivo e animações com movimento reduzido respeitado; testes unitários e de navegador.
+
+
 ## Auditoria de 23 de novembro de 2026
 
 - Testes Chromium/Firefox também funcionam com execução fora da pasta do projeto e largura adicional de 375 px.

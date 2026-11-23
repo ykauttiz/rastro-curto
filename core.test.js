@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const {summarize} = require("./core");
+const {summarize,quality} = require("./core");
 const sample = (times,status=200) => ({log:{entries:times.map(time => ({time,request:{},response:{status}}))}});
 test("Cada duração cai em uma única faixa inclusive nos limites", () => {
   assert.deepEqual(summarize(sample([0,99.9,100,499,500,1999,2000,5000,-1,null,"90"])).latency,[2,2,2,2,3]);
@@ -41,4 +41,20 @@ test("em HAR com dados sensíveis, apenas histogramas inteiros são produzidos",
   assert.equal(data.status["2xx"],1);
   assert.equal(data.status["5xx"],1);
   assert.doesNotMatch(JSON.stringify(data),/NAO_EXPORTAR|segredo|token=/);
+});
+
+test("taxas representam fração do tráfego; vazio não significa zero por cento",()=>{
+  const data={log:{entries:[
+    {time:2001,request:{},response:{status:503}},
+    {time:50,request:{},response:{status:200}},
+    {time:null,request:{},response:{status:404}}
+  ]}};
+  const result=quality(summarize(data));
+  assert.equal(result.failed.count,2);
+  assert.equal(result.slow.count,1);
+  assert.equal(result.failed.total,3);
+  assert.equal(result.failed.percent,2/3*100);
+  assert.equal(result.slow.percent,1/3*100);
+  assert.equal(quality(summarize({log:{entries:[]}})).failed.percent,null);
+  assert.equal(quality(summarize({log:{entries:[]}})).slow.percent,null);
 });
