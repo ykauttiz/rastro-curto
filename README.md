@@ -23,6 +23,12 @@ Para suporte e QA que precisam informar quantas requisições demoraram ou falha
 
 O navegador lê o arquivo localmente. O código constrói dois histogramas a partir de **entry.time** e **entry.response.status**. Nomes de arquivos, URLs, cookies, datas, cabeçalhos e corpos ficam fora da saída. Duração negativa ou ausente entra em **Sem medição**. Status zero ou ausente entra em **Desconhecido**. Entradas repetidas contam como novas observações. O boletim é texto simples, sem formato HAR. Sem dependências de produção, telemetria ou servidor de upload.
 
+## Segurança, privacidade e escopo
+
+Arquivos HAR **originais** podem registrar tokens, cookies, URLs internas e dados pessoais. Não os publique no GitHub nem os compartilhe em tickets públicos. A saída gerada pelo Rastro Curto **não é uma versão sanitizada do HAR**: é apenas um resumo de contagens. Até as contagens podem revelar volume de atividade. Leia a [política de segurança](SECURITY.md) e as [orientações de contribuição](CONTRIBUTING.md).
+
+Os testes de navegador agora executam também a largura de 375 px, verificam que o tema “Sistema” acompanha o dispositivo e iniciam o servidor a partir da pasta do próprio script, independentemente do diretório de trabalho.
+
 ## Executar e contribuir
 
 Na pasta do projeto, execute `python -m http.server 8000` e abra `http://localhost:8000`. O núcleo fica em `core.js`, a interação e a exportação em `app.js`. Rode `node --test` para verificar a agregação. Para executar os testes de interface, instale `playwright==1.55.0`, execute `python -m playwright install chromium firefox` e depois `python smoke.py`. Para reportar um problema, use uma captura fictícia e informe as contagens esperadas.
