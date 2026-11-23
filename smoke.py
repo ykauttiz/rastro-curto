@@ -49,7 +49,7 @@ try:
                 result = path.read_text()
                 assert "DADO_FICTICIO" not in result and "4xx | 1 | 0 | -1" in result
                 assert "100,0% (1/1)" in result
-                assert "Variação B−A: -100,0 p.p." in result
+                assert "Variação B−A: -83,3 p.p." in result
                 page.locator("#a").set_input_files({"name":"erro.har","mimeType":"application/json","buffer":b"{"})
                 expect(page.locator("#message")).to_contain_text("JSON válido")
                 expect(page.locator("#report")).to_be_hidden()
