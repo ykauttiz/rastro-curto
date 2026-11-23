@@ -25,3 +25,20 @@ test("Texto de origem nunca entra no boletim", () => {
   har.log.entries[0].response.content={text:"DADO_FICTICIO"};
   assert.deepEqual(summarize(har),before);
 });
+
+
+test("em HAR com dados sensíveis, apenas histogramas inteiros são produzidos",()=>{
+  const confidential={
+    log:{entries:[
+      {time:100,request:{url:"https://privado.exemplo.test/segredo?token=NAO_EXPORTAR",cookies:[{value:"NAO_EXPORTAR"}]},response:{status:200,headers:[{value:"NAO_EXPORTAR"}]}},
+      {time:2600,request:{headers:[{value:"NAO_EXPORTAR"}]},response:{status:503,content:{text:"NAO_EXPORTAR"}}}
+    ]}
+  };
+  const data=summarize(confidential);
+  assert.deepEqual(Object.keys(data).sort(),["latency","requests","status"]);
+  assert.equal(data.requests,2);
+  assert.deepEqual(data.latency,[0,1,0,1,0]);
+  assert.equal(data.status["2xx"],1);
+  assert.equal(data.status["5xx"],1);
+  assert.doesNotMatch(JSON.stringify(data),/NAO_EXPORTAR|segredo|token=/);
+});
