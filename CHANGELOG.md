@@ -1,5 +1,10 @@
 # Histórico
 
+## 25 de novembro de 2026 · Cancelamento de leitura
+
+- Permite limpar a sessão durante a leitura de um HAR, mesmo antes do primeiro boletim; resultados atrasados são descartados.
+- Teste de navegador com leitura deliberadamente atrasada verifica o cancelamento.
+
 ## 23 de novembro de 2026 · Indicadores proporcionais e interface
 
 - Painel com percentuais acessíveis de respostas HTTP 4xx/5xx e requisições de duração igual ou superior a 2 segundos.
