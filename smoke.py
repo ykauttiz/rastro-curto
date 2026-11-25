@@ -22,6 +22,24 @@ try:
             for width in (320, 375, 1280):
                 page = browser.new_page(viewport={"width": width, "height": 800})
                 page.goto(f"http://127.0.0.1:{server.server_port}")
+                # Delay the first read to verify cancellation while no report exists.
+                page.evaluate("""() => {
+                    const original = File.prototype.text;
+                    File.prototype.text = function() {
+                        return new Promise(resolve => {
+                            window.finishRead = () => original.call(this).then(resolve);
+                        });
+                    };
+                    window.restoreRead = () => { File.prototype.text = original; };
+                }""")
+                page.locator("#a").set_input_files({"name":"pendente.har","mimeType":"application/json","buffer":b'{"log":{"entries":[]}}'})
+                expect(page.locator("#message")).to_contain_text("Lendo captura A")
+                expect(page.locator("#clear")).to_be_visible()
+                page.locator("#clear").click()
+                page.evaluate("async () => { await window.finishRead(); window.restoreRead(); }")
+                expect(page.locator("#report")).to_be_hidden()
+                expect(page.locator("#message")).to_have_text("Sessão limpa.")
+                expect(page.locator("#clear")).to_be_hidden()
                 page.get_by_role("button", name="Experimentar", exact=False).click()
                 expect(page.get_by_role("row", name="2.000 ms ou mais 2 0 -2")).to_be_visible()
                 expect(page.locator("#quality")).to_contain_text("33,3% (2/6)")

@@ -2,6 +2,7 @@
 const el = id => document.getElementById(id);
 let captures = [null, null];
 const versions = [0, 0];
+const pending = [false, false];
 const groups = [
   ["Duração por requisição", ["Abaixo de 100 ms", "100 a <500 ms", "500 a <2.000 ms", "2.000 ms ou mais", "Sem medição"], r => r.latency],
   ["Resposta HTTP", ["1xx", "2xx", "3xx", "4xx", "5xx", "Desconhecido"], r => Object.values(r.status)]
@@ -61,7 +62,7 @@ function renderQuality(a,b,lines){
 function render() {
   const [a, b] = captures;
   el("report").hidden = !a;
-  el("clear").hidden = !a && !b;
+  el("clear").hidden = !a && !b && !pending.some(Boolean);
   el("tables").replaceChildren();
   el("quality").replaceChildren();
   bulletin = "";
@@ -97,7 +98,7 @@ function render() {
 }
 function reset() {
   captures = [null, null];
-  ["a", "b"].forEach((id,i) => { versions[i]++; el(id).value = ""; });
+  ["a", "b"].forEach((id,i) => { versions[i]++; pending[i] = false; el(id).value = ""; });
   render();
 }
 ["a", "b"].forEach((id, i) => {
@@ -105,8 +106,10 @@ function reset() {
     const file = event.target.files[0];
     const version = ++versions[i];
     captures[i] = null;
+    pending[i] = Boolean(file);
     render();
     if (!file) { el("message").textContent = "Seleção removida."; return; }
+    el("message").textContent = "Lendo captura " + id.toUpperCase() + "…";
     try {
       if (file.size > 12 * 1024 * 1024) throw Error("Use uma captura de até 12 MiB.");
       const raw = await file.text();
@@ -120,6 +123,7 @@ function reset() {
       if (version !== versions[i]) return;
       el("message").textContent = error.message;
     }
+    pending[i] = false;
     event.target.value = "";
     render();
   });
